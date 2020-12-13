@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Read my bill</title>
+</head>
+<body>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image" onchange="this.form.submit();"/>
+</form>
+
+{% if total_payable %}
+    Total payable: {{total_payable}}
+{% endif %}
+
+</body>
+</html>
