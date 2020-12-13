@@ -1,4 +1,4 @@
-#Description
+# Description
 A simple web application that takes in a ***photo*** 
 of ultility bill and try to find various field, such as:
 - Total payable amount
@@ -6,7 +6,7 @@ of ultility bill and try to find various field, such as:
 - Pay date (not yet implemented)
 - BSB and Ref no. (not yet implemented)
 
-#Quick start
+# Quick start
 From read_bill_site folder, run pytest tests:
 
 ```pytest```
@@ -24,7 +24,7 @@ the user upload a image and receive back the result.
 
 ```example.py``` also provides a playground.
 
-#How it works?
+# How it works?
 The app depends heavily in Google's Tesseract project.
 It will try to detect a field, for example "Total amount", through
 finding some keywords (total, amount, direct debit, etc.).
@@ -38,7 +38,7 @@ it will just use the largest number for "Total amount".
 
 If all cases fails, the value will be None.
 
-#Road map
+# Road map
 - Increase detection accuracy
 - Detect BPAY info  
 
