@@ -10,7 +10,7 @@ class ImagePreprocessing:
     The purpose of this class is to contains all the necessary image preprocessing
     before we extract data from it.
 
-    As of current, only converting to grayscale is necessary.
+    As of current, only converting to rgb and grayscale is necessary.
     """
 
     def __init__(self, img):
@@ -180,6 +180,8 @@ class Extractor:
 
                         if(ind_row_right.shape[0] + ind_column_below.shape[0]) == 0:
                             if len(nominated_fields[key]) == 0:
+                                # if there is no satisfying cell and there is no candidate already
+                                # revert to backup function
                                 nominated_fields[key] = backup_extract_total_payable(self.data)
 
                             continue
@@ -190,6 +192,8 @@ class Extractor:
                         if ind_column_below.shape[0] > 0:
                             dist_y = self.data["pos"][ind_column_below, 1] - self.data["pos"][i, 1]
 
+                        # if there are cells in both below and to the right
+                        # we choose whatever closest to the cell
                         if ind_row_right.shape[0] > 0 and ind_column_below.shape[0] > 0:
                             if np.min(dist_x) < np.min(dist_y):
                                 ind_closest = ind_row_right[np.argmin(dist_x)]
@@ -203,15 +207,20 @@ class Extractor:
                             ind_closest = ind_column_below[np.argmin(dist_y)]
 
                         else:
+                            # it should never reach here.
                             raise NameError("Unexpected logic at _extract_relevant_fields")
 
                         nominated_fields["total_payable"].extend(self.data["number"][ind_closest])
 
+        # we only choose 1 candidate for each fields.
         self.fields = self._find_best_candidate(nominated_fields)
 
     def extract(self):
+        # The image needs to be processed first.
         self.img = self.preprocessing.process()
+
+        # Convert the image to data and then extract the relevant fields
         self._img_to_data()
-        if self.data is not None:
+        if self.data is not None:  # self.data is None when self.img is None.
             self._extract_relevant_fields()
 
